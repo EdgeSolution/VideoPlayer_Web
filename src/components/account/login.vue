@@ -3,15 +3,15 @@
         <el-form :model="form" :rules="rules2" ref="form" label-position="left" label-width="0px" class="demo-ruleForm card-box loginform">
             <div class="title">
                 <h1>Video Player</h1>
-                <p>{{$t('login.welcome')}}<br/>{{$t('login.server')}}</p>
+                <p>Welcome To<br/>Industry Edge Device Manager Server</p>
             </div>
             <el-form-item prop="username">
-                <el-input type="text" v-model.trim="form.username" auto-complete="off" :placeholder="$t('login.inputUsernameHolder')"></el-input>
+                <el-input type="text" v-model.trim="form.username" auto-complete="off" placeholder="Please input username"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input type="password" v-model.trim="form.password" auto-complete="off" :placeholder="$t('login.inputPasswordHolder')"  @keyup.native.enter="handleSubmit()"></el-input>
+                <el-input type="password" v-model.trim="form.password" auto-complete="off" placeholder="Please input password"  @keyup.native.enter="handleSubmit()"></el-input>
             </el-form-item>
-            <el-checkbox v-model="checked" style="margin:0px 0px 35px 0px;">{{$t('login.remember')}}</el-checkbox>
+            <el-checkbox v-model="checked" style="margin:0px 0px 35px 0px;">Remember me</el-checkbox>
             <span></span>
             <el-form-item style="width:100%;">
                 <el-button class="login_btn" type="primary" style="width:100%;" v-loading="loading" @click.native.prevent="handleSubmit()">{{$t('login.login')}}</el-button>
@@ -35,7 +35,7 @@
             let validateLogin = (rule,value,callback)=>{
                 let reg=new RegExp(/^[0-9A-Za-z]{3,12}$/);
                 if(!reg.test(value)){
-                    return callback(new Error (this.$t('global.verifySimpleError')))
+                    return callback(new Error ("contain letter and number length 3~12"))
                 }else{callback()};
             };
             let username="";
@@ -63,7 +63,6 @@
                 form: {
                     username: username,
                     password: password,
-                    verifycode: '', 
                 },
 
                 rules2: {
