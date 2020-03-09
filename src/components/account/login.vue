@@ -11,11 +11,6 @@
             <el-form-item prop="password">
                 <el-input type="password" v-model.trim="form.password" auto-complete="off" :placeholder="$t('login.inputPasswordHolder')"  @keyup.native.enter="handleSubmit()"></el-input>
             </el-form-item>
-            <!-- <el-form-item prop="verifycode">
-                <input type="text" class="identifyInput" v-model.trim="form.verifycode" auto-complete="off" :placeholder="$t('login.inputVerifyCodeHolder')"></input>
-                <identify-code :identifyCode="identifyCode"></identify-code>
-                <i class="fa fa-refresh refresh" aria-hidden="true" @click="refreshIdentify"></i>   
-            </el-form-item> -->
             <el-checkbox v-model="checked" style="margin:0px 0px 35px 0px;">{{$t('login.remember')}}</el-checkbox>
             <span></span>
             <el-form-item style="width:100%;">
@@ -26,7 +21,7 @@
 </template>
 
 <script>
-    import identifyCode from './identify'
+
     import {loginApi} from '../restfulapi/authApi'
     import handleResponse from "../restfulapi/handleResponse"
     import utils from "../../assets/js/utils"
@@ -36,15 +31,6 @@
         
         name: 'login',
         data() {
-            const validateVerifycode = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error(this.$t('login.verifycodeEmpty')))
-                } else if (value.toLowerCase() !== this.identifyCode.toLowerCase()) {
-                    callback(new Error(this.$t('login.verifycodeError')))
-                } else {
-                    callback()
-                }
-            }
 
             let validateLogin = (rule,value,callback)=>{
                 let reg=new RegExp(/^[0-9A-Za-z]{3,12}$/);
@@ -73,7 +59,6 @@
                 title: '',
                 appTitle: applicationTitle,
                 loading: false,
-                identifyCode: '',
                 redirectUrl: '',
                 form: {
                     username: username,
@@ -88,16 +73,12 @@
                     password: [
                         { required: true, trigger: 'blur', validator: validateLogin}
                     ],
-                    // verifycode: [
-                    //     { required: true, trigger: 'blur', validator: validateVerifycode }
-                    // ]
+
                 },
                 checked: checked
             }
         },
-        components: {
-            identifyCode
-        },
+       
         methods: {
             handleSubmit() {
                 this.$refs.form.validate((valid) => {
@@ -133,38 +114,18 @@
                                 }
                             })
                         })
-                    }else{
-                        this.refreshIdentify()
                     }
                 })
                
             },
-            refreshIdentify(){
-                var str = "",
-                arr = ['0', '2', '3', '4', '5', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'z', 'A', 'B', 'D', 'H', 'G', 'Q', 'W','N', 'R', 'E'];
-                for(var i=0; i<4; i++){
-                    let pos = Math.round(Math.random() * (arr.length-1));
-                    str += arr[pos];
-                }
-                this.identifyCode = str;
-            },
-            randomWord(count){
-                return str;
-            }
+            
         },
         created(){
             if(this.$route.query.redirect){
                 this.redirectUrl = this.$route.query.redirect;
             }
-            // this.refreshIdentify();
         },
-        // mounted() {
-        //     window.addEventListener('keyup', (e) => {
-        //         if (e.keyCode === 13) {
-        //             this.handleSubmit()
-        //         }
-        //     })
-        // },
+        
     }
 </script>
 
@@ -204,6 +165,7 @@
         margin-bottom:5px;
         color: $primary-color;
     }
+
     p{
         color: $darkgray-color;
     }
