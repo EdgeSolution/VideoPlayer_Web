@@ -35,8 +35,9 @@
                 target-order="push"
                 :titles="[videoResource, videoTarget]"
                 @left-check-change="left_check"
+                @change="transferData()"
                 >
-                <el-button class="transfer-footer" slot="left-footer" size="small" @click="deleteVideoList()">Delete</el-button>
+                <el-button class="transfer-footer" slot="left-footer" size="small" @click="deleteVideoList()" :disabled="left_selected_data.length==0">Delete</el-button>
                 <el-button class="transfer-footer" slot="right-footer" size="small" style="display:none"></el-button>
                 </el-transfer>
                 <div class="action-area">
@@ -380,8 +381,8 @@
             },
 
             initVideoData(){
-                window.clearInterval(this.timer);
-                this.timer = null;
+                window.clearInterval(_g.timer);
+                _g.timer = null;
                 this.allVideoList= [];
                 this.playList= [];
                 this.isPlay= false;
@@ -452,8 +453,8 @@
                                             this.getVideoVolume();
                                             this.videoTarget = "Playing";
                                             this.isPlay = true;
-                                            if(this.timer == null){
-                                                this.timer = window.setInterval(() => {
+                                            if(_g.timer == null){
+                                                _g.timer = window.setInterval(() => {
                                                     this.getVideoInfo();
                                                 }, 1000)
                                             }
@@ -461,8 +462,8 @@
                                         }else{
                                             this.videoTarget = "Ready Play"
                                             this.isPlay = false;
-                                            window.clearInterval(this.timer);
-                                            this.timer = null;
+                                            window.clearInterval(_g.timer);
+                                            _g.timer = null;
                                         }
                                         break;
                                     case this.funcIds.getVolume:
@@ -485,8 +486,8 @@
                             }
                            
                         }else{
-                            window.clearInterval(this.timer);
-                            this.timer = null;
+                            window.clearInterval(_g.timer);
+                            _g.timer = null;
                         }
                         
                     })
@@ -527,8 +528,8 @@
                         if(res.status === "CHANGED"){
                             switch(funcId){
                                 case this.funcIds.setPause:
-                                    window.clearInterval(this.timer);
-                                    this.timer = null;
+                                    window.clearInterval(_g.timer);
+                                    _g.timer = null;
                                     this.$swal("", "Success", "success").then(() => {
                                         this.getVideoStatus();
                                     })
@@ -672,8 +673,8 @@
                     this.contentLoading = false;
                     handleResponse(obj, (res) => {
                         if(res.status === "CHANGED"){
-                            window.clearInterval(this.timer);
-                            this.timer = null;
+                            window.clearInterval(_g.timer);
+                            _g.timer = null;
                             this.$swal("", "Success", "success").then(() => {
                                 this.initVideoData();
                             })
@@ -748,6 +749,9 @@
 
             left_check(val){
                 this.left_selected_data = val;
+            },
+            transferData(){
+                this.left_selected_data = [];
             }
 
             
