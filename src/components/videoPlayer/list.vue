@@ -13,7 +13,8 @@
                 :isDisabledOffDev="isDisabledOffDev">
                 </select-device>
                 <div class="info" v-show="!isInstalled&& isSingleMode&& defIsShow">
-                    Video Player App is not installed
+                    Video Player App is not installed.
+                    It can be installed through App Manager on AndroidDM
                 </div>
                 <div class="switchApp" v-show="isSingleMode&& isInstalled&& defIsShow">
                     <span>
